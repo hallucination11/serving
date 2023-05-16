@@ -1,0 +1,2 @@
+1.模型训练与加载需用同一版本的tf
+2.默认signatures是serving_default
