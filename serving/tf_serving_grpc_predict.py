@@ -4,10 +4,11 @@ import grpc
 import tensorflow as tf
 import numpy as np
 
-tf.compat.v1.app.flags.DEFINE_string('server', '0.0.0.0:8500', 'PredictionService host:port')
+tf.compat.v1.app.flags.DEFINE_string('server', '124.222.138.165:8501', 'PredictionService host:port')
 FLAGS = tf.compat.v1.app.flags.FLAGS
 
 feature_dict = {}
+exit()
 
 
 def _float_feature(value):
@@ -27,7 +28,6 @@ def _int64_feature(value):
 
 # feature_dict['uid'] = _bytes_feature(bytes('b\'1023\'', encoding='utf-8'))
 feature_dict['uid'] = _int64_feature(102299)
-feature_dict['1039_7_order_cnt'] = _int64_feature(90)
 example_proto = tf.train.Example(features=tf.train.Features(feature=feature_dict))
 serialized = example_proto.SerializeToString()
 channal = grpc.insecure_channel('localhost:8500')
