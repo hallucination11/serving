@@ -27,10 +27,10 @@ def _int64_feature(value):
 
 
 # feature_dict['uid'] = _bytes_feature(bytes('b\'1023\'', encoding='utf-8'))
-feature_dict['uid'] = _int64_feature(102299)
+feature_dict['uid'] = _int64_feature(233)
 example_proto = tf.train.Example(features=tf.train.Features(feature=feature_dict))
 serialized = example_proto.SerializeToString()
-channal = grpc.insecure_channel('localhost:8500')
+channal = grpc.insecure_channel('localhost:8501')
 stub = prediction_service_pb2_grpc.PredictionServiceStub(channal)
 requset = predict_pb2.PredictRequest()
 requset.model_spec.name = 'rec_model'

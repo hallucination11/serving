@@ -3,3 +3,7 @@ NLP_base/__pycache__/
 .idea/
 NLP_base/.DS_Store
 *.DS_Store
+saved_model_dir/
+model_dir/
+__pycache__/vendor.cpython-36.pyc
+vendor/
