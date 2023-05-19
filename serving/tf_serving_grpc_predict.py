@@ -2,13 +2,20 @@ from tensorflow_serving.apis import predict_pb2
 from tensorflow_serving.apis import prediction_service_pb2_grpc
 import grpc
 import tensorflow as tf
-import numpy as np
 
-tf.compat.v1.app.flags.DEFINE_string('server', '124.222.138.165:8501', 'PredictionService host:port')
-FLAGS = tf.compat.v1.app.flags.FLAGS
+print(tf.__version__)
+
+tf.compat.v1.flags.DEFINE_string('server', '124.222.138.165:8500', 'PredictionService host:port')
+FLAGS = tf.compat.v1.flags.FLAGS
+
 
 feature_dict = {}
-exit()
+
+channal = grpc.insecure_channel(FLAGS.server)
+stub = prediction_service_pb2_grpc.PredictionServiceStub(channal)
+requset = predict_pb2.PredictRequest()
+requset.model_spec.name = 'dssm'
+requset.model_spec.signature_name = ''
 
 
 def _float_feature(value):
@@ -27,28 +34,23 @@ def _int64_feature(value):
 
 
 # feature_dict['uid'] = _bytes_feature(bytes('b\'1023\'', encoding='utf-8'))
-feature_dict['uid'] = _int64_feature(233)
+feature_dict['uid'] = _int64_feature(1855)
 example_proto = tf.train.Example(features=tf.train.Features(feature=feature_dict))
 serialized = example_proto.SerializeToString()
-channal = grpc.insecure_channel('localhost:8501')
-stub = prediction_service_pb2_grpc.PredictionServiceStub(channal)
-requset = predict_pb2.PredictRequest()
-requset.model_spec.name = 'rec_model'
-requset.model_spec.signature_name = 'predict'
+
 
 example = tf.train.Example()
 # example.features.feature['sku_sn'].bytes_list.value.extend([bytes('83923', 'utf-8')])
-example.features.feature['uid'].int64_list.value.extend([568810000453276939])
-example.features.feature['sku_sn'].int64_list.value.extend([2406096])
+example.features.feature['uid'].int64_list.value.extend([1004])
 # example.features.feature["1039_7_order_cnt"].int64_list.value.extend([7])
 b = example.SerializeToString()
-a = tf.make_tensor_proto(example.SerializeToString(), dtype=tf.string)
+# a = tf.make_tensor_proto(example.SerializeToString(), dtype=tf.string)
 
 requset.inputs['examples'].CopyFrom(tf.make_tensor_proto(tf.constant([b], dtype=tf.string)))
 
-response = stub.Predict(requset, 10.0)
+response = stub.Predict(requset, 5.0)
 
-print(response)
+print(response.outputs['user_emb'].float_val)
 
 '''
 # 获取stub

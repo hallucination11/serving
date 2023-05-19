@@ -3,7 +3,7 @@ import time
 from features import test_features
 
 # serving
-imported = tf.saved_model.load('C:/work/My_model/serving/saved_model_dir/1684153410')
+imported = tf.saved_model.load('C:/work/My_model/serving/saved_model_dir/1684462413')
 print(imported)
 
 
